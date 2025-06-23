@@ -56,5 +56,24 @@ docker ps
 输出示例：
 CONTAINER ID   IMAGE   ...   PORTS
 abcdef123456   nginx   ...   0.0.0.0:32769->80/tcp, 0.0.0.0:32770->443/tcp
-你就可以通过浏览器访问：http://localhost:32769来访问 Nginx 服务。
+就可以通过浏览器访问：http://localhost:32769来访问 Nginx 服务。
+```
+
+# 3
+```
+docker run -d -i -t --entrypoint sh nginx
+含义如下：
+
+✅ 各个参数解释：
+参数	作用
+-i	保持标准输入（stdin）打开，即使不连接
+-t	分配一个伪终端（tty），通常和 -i 一起用
+--entrypoint sh	覆盖镜像默认的启动命令（CMD/ENTRYPOINT），改为执行 sh
+nginx	镜像名，表示用 nginx 镜像来启动容器
+
+🧠 实际效果：
+以后台方式运行一个 Nginx 镜像，但启动的并不是 Nginx，而是一个 sh（shell 进程）。
+这样做的好处是可以进入这个容器后手动执行命令，比如调试或查看镜像内部内容。
+
+
 ```
