@@ -40,3 +40,38 @@ docker attach test
 退出影响	Ctrl+C 会杀掉主进程	Ctrl+C 仅退出子进程
 退出快捷键	Ctrl + P 再 Ctrl + Q	直接 exit 或 Ctrl+D
 ```
+# 2
+```
+--sig-proxy用于控制 信号（如 Ctrl+C / SIGINT）是否从宿主机转发到容器进程。
+
+✅ 默认行为（--sig-proxy=true）
+在默认情况下（true）：
+当在 docker attach 的终端中按下 Ctrl+C（发送 SIGINT）时，Docker 会把这个信号转发给容器中的主进程（PID 1）
+这通常会导致容器中的程序退出或中断（如果它会响应 SIGINT）。
+
+
+❗ 举个例子：
+docker run -it --name test ubuntu bash
+然后你在里面运行一个程序：
+ping 8.8.8.8
+
+再在主机上 attach：
+docker attach test
+
+这时按下 Ctrl+C：
+如果 --sig-proxy=true（默认）：容器里的 ping 被终止
+如果 --sig-proxy=false：容器不会收到信号，你的终端退出 attach，但容器继续运行
+
+
+✅ 显式使用方式
+docker attach --sig-proxy=false test
+或：
+docker run --sig-proxy=false ...
+
+
+✅ 使用场景总结
+场景	是否建议使用 --sig-proxy=false
+不想 Ctrl+C 杀掉容器主进程	✅ 推荐设置为 false
+希望信号能控制容器进程退出（如前台服务）	✅ 保持 true（默认）
+脚本中控制多个容器	可根据需求显式设置以避免误杀
+```
