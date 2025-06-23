@@ -76,4 +76,11 @@ nginx	镜像名，表示用 nginx 镜像来启动容器
 这样做的好处是可以进入这个容器后手动执行命令，比如调试或查看镜像内部内容。
 
 
+[root@master01 ~]# docker run -d -i -t --entrypoint sh nginx
+fe676dad04735ba74aa60ccfa8c81fb3b801bc4122fcce31456be5a4f055203b
+[root@master01 ~]# docker ps
+CONTAINER ID   IMAGE                       COMMAND                   CREATED          STATUS          PORTS     NAMES
+fe676dad0473   nginx                       "sh"                      12 seconds ago   Up 12 seconds   80/tcp    laughing_fermi
+
+
 ```
