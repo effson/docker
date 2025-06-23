@@ -154,5 +154,50 @@ docker inspect --format='{{json .State.Health}}' <容器ID或名称> | jq
     }
   ]
 }
+```
+```
+[root@master01 ~]# docker logs -f d57a6995114ca7b89b0c754d65af7e1a7ecce2cd2c9fff52e719fde582e6da58
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+/docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2025/06/23 15:36:08 [notice] 1#1: using the "epoll" event method
+2025/06/23 15:36:08 [notice] 1#1: nginx/1.27.5
+2025/06/23 15:36:08 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14)
+2025/06/23 15:36:08 [notice] 1#1: OS: Linux 3.10.0-1160.119.1.el7.x86_64
+2025/06/23 15:36:08 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025/06/23 15:36:08 [notice] 1#1: start worker processes
+2025/06/23 15:36:08 [notice] 1#1: start worker process 29
+2025/06/23 15:36:08 [notice] 1#1: start worker process 30
+2025/06/23 15:36:08 [notice] 1#1: start worker process 31
+2025/06/23 15:36:08 [notice] 1#1: start worker process 32
+2025/06/23 15:36:08 [notice] 1#1: start worker process 33
+2025/06/23 15:36:08 [notice] 1#1: start worker process 34
+2025/06/23 15:36:08 [notice] 1#1: start worker process 35
+2025/06/23 15:36:08 [notice] 1#1: start worker process 36
+127.0.0.1 - - [23/Jun/2025:15:36:10 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:13 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:15 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:17 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:19 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:21 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:23 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:25 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:27 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:29 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:31 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:33 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:35 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:37 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:39 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:41 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:43 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:45 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
+127.0.0.1 - - [23/Jun/2025:15:36:47 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/7.88.1" "-"
 
 ```
