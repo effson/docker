@@ -1,3 +1,4 @@
+# 1
 ```
 docker run -d -p 是 docker run 命令中的两个常用选项，分别是：
 
@@ -33,4 +34,27 @@ docker run -d -p 8080:80 -p 443:443 nginx
 还支持指定绑定的主机 IP，例如：
 docker run -d -p 127.0.0.1:8080:80 nginx
 表示该端口只监听在本机环回地址（localhost）上，外部无法访问。
+```
+
+# 2
+```
+docker run -d -P （大写P）：
+
+✅ -P（大写 P）：自动分配端口（Publish all exposed ports）
+表示 Docker 会将容器中所有通过 EXPOSE 指令声明的端口，自动映射到宿主机的随机高位端口（通常是 32768~60999 之间）。
+
+📌 举个例子
+运行：
+docker run -d -P --name mynginx nginx
+
+因为 nginx 镜像在 Dockerfile 中写了：EXPOSE 80 443
+这个命令会：把容器的 80 端口自动映射到宿主机的某个随机端口（比如 32769）
+把容器的 443 端口自动映射到另一个随机端口（比如 32770）
+
+通过以下命令查看具体分配了哪些端口：
+docker ps
+输出示例：
+CONTAINER ID   IMAGE   ...   PORTS
+abcdef123456   nginx   ...   0.0.0.0:32769->80/tcp, 0.0.0.0:32770->443/tcp
+你就可以通过浏览器访问：http://localhost:32769来访问 Nginx 服务。
 ```
