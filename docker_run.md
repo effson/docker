@@ -84,3 +84,75 @@ fe676dad0473   nginx                       "sh"                      12 seconds 
 
 
 ```
+# 4
+
+```
+docker run -d --rm --health-cmd="curl http://localhost" --health-interval=30s --health-timeout=5s --health-retries=3 --health-start-period 10s  nginx
+
+🧠 含义说明：
+参数	说明
+-d	后台运行容器
+--rm	容器停止后自动删除
+--health-cmd	执行 curl 访问 nginx 来检查健康状态
+--health-interval=30s	每 30 秒检查一次
+--health-timeout=5s	单次健康检查超时时间为 5 秒
+--health-retries=3	连续失败 3 次判定为 unhealthy
+--health-start-period 10s	容器启动后 10 秒内不判定失败（用于预热）
+
+[root@master01 ~]# docker run -d --rm  --health-cmd="curl http://localhost" --health-interval=30s  --health-timeout=5s  --health-retries=3  --health-start-period 10s  nginx
+d57a6995114ca7b89b0c754d65af7e1a7ecce2cd2c9fff52e719fde582e6da58
+
+✅ 查看健康状态
+运行后，可以用：
+
+docker ps 查看 STATUS 字段：
+[root@master01 ~]# docker ps
+CONTAINER ID   IMAGE                       COMMAND                   CREATED          STATUS                   PORTS     NAMES
+d57a6995114c   nginx                       "/docker-entrypoint.…"   2 minutes ago    Up 2 minutes (healthy)   80/tcp    dreamy_torvalds
+
+也可以进一步查看详细健康信息：
+
+docker inspect <容器ID或名称>
+或更精准输出：
+
+docker inspect --format='{{json .State.Health}}' <容器ID或名称> | jq
+
+[root@master01 ~]# docker inspect --format='{{json .State.Health}}' d57a6995114c | jq
+{
+  "Status": "healthy",
+  "FailingStreak": 0,
+  "Log": [
+    {
+      "Start": "2025-06-23T23:24:25.741255624+08:00",
+      "End": "2025-06-23T23:24:25.783943038+08:00",
+      "ExitCode": 0,
+      "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100   615  100   615    0     0  1048k      0 --:--:-- --:--:-- --:--:--  600k\n<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>\n<style>\nhtml { color-scheme: light dark; }\nbody { width: 35em; margin: 0 auto;\nfont-family: Tahoma, Verdana, Arial, sans-serif; }\n</style>\n</head>\n<body>\n<h1>Welcome to nginx!</h1>\n<p>If you see this page, the nginx web server is successfully installed and\nworking. Further configuration is required.</p>\n\n<p>For online documentation and support please refer to\n<a href=\"http://nginx.org/\">nginx.org</a>.<br/>\nCommercial support is available at\n<a href=\"http://nginx.com/\">nginx.com</a>.</p>\n\n<p><em>Thank you for using nginx.</em></p>\n</body>\n</html>\n"
+    },
+    {
+      "Start": "2025-06-23T23:24:55.784346747+08:00",
+      "End": "2025-06-23T23:24:55.842291862+08:00",
+      "ExitCode": 0,
+      "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100   615  100   615    0     0   835k      0 --:--:-- --:--:-- --:--:--  600k\n<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>\n<style>\nhtml { color-scheme: light dark; }\nbody { width: 35em; margin: 0 auto;\nfont-family: Tahoma, Verdana, Arial, sans-serif; }\n</style>\n</head>\n<body>\n<h1>Welcome to nginx!</h1>\n<p>If you see this page, the nginx web server is successfully installed and\nworking. Further configuration is required.</p>\n\n<p>For online documentation and support please refer to\n<a href=\"http://nginx.org/\">nginx.org</a>.<br/>\nCommercial support is available at\n<a href=\"http://nginx.com/\">nginx.com</a>.</p>\n\n<p><em>Thank you for using nginx.</em></p>\n</body>\n</html>\n"
+    },
+    {
+      "Start": "2025-06-23T23:25:25.843458176+08:00",
+      "End": "2025-06-23T23:25:25.891235877+08:00",
+      "ExitCode": 0,
+      "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100   615  100   615    0     0   999k      0 --:--:-- --:--:-- --:--:--  600k\n<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>\n<style>\nhtml { color-scheme: light dark; }\nbody { width: 35em; margin: 0 auto;\nfont-family: Tahoma, Verdana, Arial, sans-serif; }\n</style>\n</head>\n<body>\n<h1>Welcome to nginx!</h1>\n<p>If you see this page, the nginx web server is successfully installed and\nworking. Further configuration is required.</p>\n\n<p>For online documentation and support please refer to\n<a href=\"http://nginx.org/\">nginx.org</a>.<br/>\nCommercial support is available at\n<a href=\"http://nginx.com/\">nginx.com</a>.</p>\n\n<p><em>Thank you for using nginx.</em></p>\n</body>\n</html>\n"
+    },
+    {
+      "Start": "2025-06-23T23:25:55.891785413+08:00",
+      "End": "2025-06-23T23:25:55.939013921+08:00",
+      "ExitCode": 0,
+      "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>\n<style>\nhtml { color-scheme: light dark; }\nbody { width: 35em; margin: 0 auto;\nfont-family: Tahoma, Verdana, Arial, sans-serif; }\n</style>\n</head>\n<body>\n<h1>Welcome to nginx!</h1>\n<p>If you see this page, the nginx web server is successfully installed and\nworking. Further configuration is required.</p>\n\n<p>For online documentation and support please refer to\n<a href=\"http://nginx.org/\">nginx.org</a>.<br/>\nCommercial support is available at\n<a href=\"http://nginx.com/\">nginx.com</a>.</p>\n\n<p><em>Thank you for using nginx.</em></p>\n</body>\n</html>\n\r100   615  100   615    0     0   999k      0 --:--:-- --:--:-- --:--:--  600k\n"
+    },
+    {
+      "Start": "2025-06-23T23:26:25.939745155+08:00",
+      "End": "2025-06-23T23:26:26.009136641+08:00",
+      "ExitCode": 0,
+      "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>\n<style>\nhtml { color-scheme: light dark; }\nbody { width: 35em; margin: 0 auto;\nfont-family: Tahoma, Verdana, Arial, sans-serif; }\n</style>\n</head>\n<body>\n<h1>Welcome to nginx!</h1>\n<p>If you see this page, the nginx web server is successfully installed and\nworking. Further configuration is required.</p>\n\n<p>For online documentation and support please refer to\n<a href=\"http://nginx.org/\">nginx.org</a>.<br/>\nCommercial support is available at\n<a href=\"http://nginx.com/\">nginx.com</a>.</p>\n\n<p><em>Thank you for using nginx.</em></p>\n</body>\n</html>\n\r100   615  100   615    0     0  1256k      0 --:--:-- --:--:-- --:--:--  600k\n"
+    }
+  ]
+}
+
+```
