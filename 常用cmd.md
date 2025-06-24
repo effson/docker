@@ -30,3 +30,26 @@ docker tag 命令用于为现有的 Docker 镜像创建一个新的标签。
 
 docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
 ```
+
+```
+✅ 4.docker save
+docker save 命令用于将 Docker 镜像保存为一个 tar 归档文件。
+通常用于备份镜像或将镜像传输到其他系统
+
+docker save [OPTIONS] IMAGE [IMAGE...]
+**主要选项
+-o, --output: 指定输出文件的名称，默认为 -（标准输出）。
+--help: 显示帮助信息。
+```
+
+```
+✅ 5.docker commit
+docker commit 命令用于将正在运行的容器的当前状态保存为一个新的 Docker 镜像。
+可以在容器中进行更改后，创建一个新的镜像以便后续使用。
+
+docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+**主要选项
+-a, --author: 指定镜像的作者信息。
+-m, --message: 添加提交信息，用于描述这次提交的更改。
+--change: 修改镜像的元数据，例如设置环境变量、工作目录等。
+```
