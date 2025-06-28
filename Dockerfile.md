@@ -64,3 +64,37 @@ start up params:     param1 = p1 and param2 = p2
 REPOSITORY                                TAG        IMAGE ID       CREATED          SIZE
 hello                                     1.0.0      b95573d806c6   30 seconds ago   1.06GB
 ```
+
+优化版本：<br>
+```
+FROM golang:1.18 as s0
+# RUN git clone https://gitee.com/nickdemo/helloworld.git
+WORKDIR helloworld
+ADD ./helloworld ./
+#RUN CGO_ENABLE=0 GOOS=linux GOARCH=amd64 go build -o app . 
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -extldflags '-static'" -o app .
+
+RUN pwd
+
+FROM alpine
+LABEL maintainer="jeff"
+ENV env1=v1
+ENV env2=v2
+LABEL myhello 1.0.0
+LABEL env prod
+COPY  --from=s0 /go/helloworld/app ./
+EXPOSE 80
+CMD ["./app","--param1=p1","--param2=p2"]
+
+
+
+[root@master01 gcc]# docker rm myhellov2
+myhellov2
+[root@master01 gcc]# docker run -d -p 81:80 --name myhellov2 myhellov2:latest
+66c86621367824b5f04d9a4a5c22bc7adc1d079477ca636e9b60f77e02fa01b5
+[root@master01 gcc]# curl http://localhost:81/print/ping
+hello world
+
+
+
+```
