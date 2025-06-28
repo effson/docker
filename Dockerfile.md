@@ -128,7 +128,7 @@ docker build -t myapp:latest --cache-from myapp:latest .
 ```
 # 2
 ```
-✅ Dockerfile:
+✅ Dockerfilev3:
 FROM golang:1.18 as s0
 # RUN git clone https://gitee.com/nickdemo/helloworld.git
 ONBUILD ARG wd src dst
@@ -186,9 +186,13 @@ mygolang                                  1.0.0      ec587782c274   2 years ago 
 registry.k8s.io/pause                     3.9        e6f181688397   2 years ago     744kB
 🧱 可以看到已经构建mygolang:1.0.0：
 mygolang                                  1.0.0      ec587782c274   2 years ago     965MB
+```
 
-✅ Dockerfile:
-FROM alpine
+```
+✅ Dockerfilev4:
+FROM mygolang:1.0.0 as s0
+
+FROM alpine as s1
 LABEL maintainer="jeff"
 ENV env1=v1
 ENV env2=v2
@@ -197,4 +201,29 @@ LABEL env prod
 COPY  --from=s0 /go/helloworld/app ./
 EXPOSE 80
 CMD ["./app","--param1=p1","--param2=p2"]
+
+✅ [root@master01 gcc]# docker build -t hello:2.0.0 --build-arg wd=helloworld --build-arg src=./helloworld --build-arg dst=./ -f Dockerfilev4 .
+[+] Building 11.2s (13/13) FINISHED                                                                                                                         docker:default
+ => [internal] load build definition from Dockerfilev4                                                                                                                0.0s
+ => => transferring dockerfile: 259B                                                                                                                                  0.0s
+ => [internal] load metadata for docker.io/library/alpine:latest                                                                                                      2.5s
+ => [internal] load metadata for docker.io/library/mygolang:1.0.0                                                                                                     0.0s
+ => [auth] library/alpine:pull token for registry-1.docker.io                                                                                                         0.0s
+ => [internal] load .dockerignore                                                                                                                                     0.0s
+ => => transferring context: 2B                                                                                                                                       0.0s
+ => CACHED [s0 1/1] FROM docker.io/library/mygolang:1.0.0                                                                                                             0.0s
+ => [s1 1/2] FROM docker.io/library/alpine:latest@sha256:8a1f59ffb675680d47db6337b49d22281a139e9d709335b492be023728e11715                                             0.0s
+ => [internal] load build context                                                                                                                                     0.0s
+ => => transferring context: 5.42MB                                                                                                                                   0.0s
+ => [s0 2/1] WORKDIR helloworld                                                                                                                                       0.0s
+ => [s0 3/1] ADD ./helloworld ./                                                                                                                                      0.0s
+ => [s0 4/1] RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -extldflags '-static'" -o app .                                                       8.5s
+ => CACHED [s1 2/2] COPY  --from=s0 /go/helloworld/app ./                                                                                                             0.0s
+ => exporting to image                                                                                                                                                0.0s
+ => => exporting layers                                                                                                                                               0.0s
+ => => writing image sha256:d4d7a0ffdbdb4d28acf223c80ed5b58132eb86fcd9312f2d63d290d5f557d1f2                                                                          0.0s
+ => => naming to docker.io/library/hello:2.0.0                                                                                                                        0.0s
+✅ [root@master01 gcc]# docker images
+REPOSITORY                                TAG        IMAGE ID       CREATED         SIZE
+hello                                     2.0.0      d4d7a0ffdbdb   26 hours ago    14.4MB
 ```
