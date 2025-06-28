@@ -1,8 +1,8 @@
 # 1
 ```
-[root@master01 Docker]# vim Dockerfile
+✅ [root@master01 Docker]# vim Dockerfile
 
-Dockerfile:
+✅ Dockerfile:
 FROM golang:1.18
 LABEL maintainer="jeff"
 ENV env1=v1
@@ -16,9 +16,9 @@ EXPOSE 80
 CMD ["./app","--param1=p1","--param2=p2"]
 ```
 ```
-docker build -t hello:1.0.0 .
+✅ docker build -t hello:1.0.0 .
 
-[root@master01 Docker]# docker build -t hello:1.0.0 .
+✅ [root@master01 Docker]# docker build -t hello:1.0.0 .
 [+] Building 8.2s (8/8) FINISHED                                                                                                                                    docker:
  => [internal] load build definition from Dockerfile
  => => transferring dockerfile: 327B
@@ -36,12 +36,12 @@ docker build -t hello:1.0.0 .
 ```
 
 ```
-[root@master01 Docker]# docker images
+✅ [root@master01 Docker]# docker images
 REPOSITORY                                TAG        IMAGE ID       CREATED          SIZE
 hello                                     1.0.0      b95573d806c6   30 seconds ago   1.06GB
 ```
 ```
-[root@master01 Docker]# docker run -d -p 81:80 --name myhello hello:1.0.0
+✅ [root@master01 Docker]# docker run -d -p 81:80 --name myhello hello:1.0.0
 cd5b82c71ae1d385af42014087835017acc745e72b091d5bda60a2a479887e81
 ```
 
@@ -55,6 +55,7 @@ cd5b82c71ae1   hello:1.0.0                 "./app --param1=p1 -…"   26 seconds
 [root@master01 Docker]# curl http://localhost:81
 hello world[root@master01 Docker]# curl http://localhost:81/print/env
 env list : env1 = v1 and env2 = v2[root@master01 Docker]#
+
 [root@master01 Docker]# curl http://localhost:81/print/startup
 start up params:     param1 = p1 and param2 = p2
 ```
@@ -67,14 +68,13 @@ hello                                     1.0.0      b95573d806c6   30 seconds a
 
 优化版本：<br>
 ```
+✅ Dockerfile:
 FROM golang:1.18 as s0
 # RUN git clone https://gitee.com/nickdemo/helloworld.git
 WORKDIR helloworld
 ADD ./helloworld ./
 #RUN CGO_ENABLE=0 GOOS=linux GOARCH=amd64 go build -o app . 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -extldflags '-static'" -o app .
-
-RUN pwd
 
 FROM alpine
 LABEL maintainer="jeff"
@@ -92,19 +92,20 @@ CMD ["./app","--param1=p1","--param2=p2"]
 myhellov2
 [root@master01 gcc]# docker run -d -p 81:80 --name myhellov2 myhellov2:latest
 66c86621367824b5f04d9a4a5c22bc7adc1d079477ca636e9b60f77e02fa01b5
+
 [root@master01 gcc]# curl http://localhost:81/print/ping
 hello world
 ```
 
 ```
-docker build -t ... --target=s0
+✅ docker build -t ... --target=s0
 是用于 多阶段构建（multi-stage build） 中的一个选项，意思是：
 只构建到名为 s0 的阶段为止，不会继续执行后面的阶段。
 ```
 
 ```
-docker build -t
-✅ -t <镜像名>:<标签>
+✅ docker build -t
+-t <镜像名>:<标签>
 用于给构建好的镜像命名
 ```
 
@@ -127,6 +128,7 @@ docker build -t myapp:latest --cache-from myapp:latest .
 ```
 # 2
 ```
+✅ Dockerfile:
 FROM golang:1.18 as s0
 # RUN git clone https://gitee.com/nickdemo/helloworld.git
 ONBUILD ARG wd src dst
@@ -140,7 +142,7 @@ ONBUILD RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -extl
 ONBUILD 指令会延迟执行。它本身在当前 Dockerfile 构建时 不会生效，而是会被记录下来。当这个镜像被用作其它
 Dockerfile 的基础镜像（即 FROM <这个镜像>）时，才会自动触发执行这些指令。
 
-[root@master01 gcc]# docker build -t mygolang:1.0.0 -f Dockerfilev3 .
+✅ [root@master01 gcc]# docker build -t mygolang:1.0.0 -f Dockerfilev3 .
 [+] Building 2.8s (6/6) FINISHED                                                                                                                            docker:default
  => [internal] load build definition from Dockerfilev3                                                                                                                0.0s
  => => transferring dockerfile: 376B                                                                                                                                  0.0s
@@ -154,7 +156,7 @@ Dockerfile 的基础镜像（即 FROM <这个镜像>）时，才会自动触发�
  => => writing image sha256:ec587782c2748f8fee81a93f41331603152bb4d258914ff5b8d7c148fd08fdd9                                                                          0.0s
  => => naming to docker.io/library/mygolang:1.0.0                                                                                                                     0.0s
 
-[root@master01 gcc]# docker images
+✅ [root@master01 gcc]# docker images
 REPOSITORY                                TAG        IMAGE ID       CREATED         SIZE
 myhellov2                                 latest     d4d7a0ffdbdb   26 hours ago    14.4MB
 <none>                                    <none>     be0f947e22aa   26 hours ago    17.2MB
@@ -182,11 +184,10 @@ registry                                  2          26b2eb03618e   21 months ag
 registry.k8s.io/coredns/coredns           v1.10.1    ead0a4a53df8   2 years ago     53.6MB
 mygolang                                  1.0.0      ec587782c274   2 years ago     965MB
 registry.k8s.io/pause                     3.9        e6f181688397   2 years ago     744kB
-可以看到已经构建mygolang:1.0.0：
+🧱 可以看到已经构建mygolang:1.0.0：
 mygolang                                  1.0.0      ec587782c274   2 years ago     965MB
 
-
-
+✅ Dockerfile:
 FROM alpine
 LABEL maintainer="jeff"
 ENV env1=v1
