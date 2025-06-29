@@ -106,10 +106,11 @@ tcp://0.0.0.0:2375 是明文通信，默认不安全！<br>
 正确做法是使用 tcp://host:2376 并启用 TLS 加密通信。<br>
 
 ✅ 总结对比<br>
-通信方式	描述	默认？	是否加密<br>
-Unix Socket	本地使用 /var/run/docker.sock	✅ 默认	❌ 不加密（但本地安全）<br>
-TCP Socket	可远程连接 Docker 引擎	❌ 需配置	✅ 支持 TLS 加密<br>
-
+```
+通信方式	描述	默认？	是否加密
+Unix Socket	本地使用 /var/run/docker.sock	✅ 默认	❌ 不加密（但本地安全）
+TCP Socket	可远程连接 Docker 引擎	❌ 需配置	✅ 支持 TLS 加密
+```
 ✅ 配置远程监听（补充）<br>
 编辑 /etc/docker/daemon.json：<br>
 ```
