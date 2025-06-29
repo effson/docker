@@ -88,6 +88,9 @@ docker ps
 可用 curl 验证：<br>
 ```
 curl --unix-socket /var/run/docker.sock http://localhost/version
+
+[root@master01 gcc]# curl --unix-socket /var/run/docker.sock http://localhost/version
+{"Platform":{"Name":"Docker Engine - Community"},"Components":[{"Name":"Engine","Version":"26.1.4","Details":{"ApiVersion":"1.45","Arch":"amd64","BuildTime":"2024-06-05T11:31:02.000000000+00:00","Experimental":"false","GitCommit":"de5c9cf","GoVersion":"go1.21.11","KernelVersion":"3.10.0-1160.119.1.el7.x86_64","MinAPIVersion":"1.24","Os":"linux"}},{"Name":"containerd","Version":"v1.7.23","Details":{"GitCommit":"57f17b0a6295a39009d861b89e3b3b87b005ca27"}},{"Name":"runc","Version":"1.2.0","Details":{"GitCommit":"v1.2.0-0-g0b9fa21b"}},{"Name":"docker-init","Version":"0.19.0","Details":{"GitCommit":"de40ad0"}}],"Version":"26.1.4","ApiVersion":"1.45","MinAPIVersion":"1.24","GitCommit":"de5c9cf","GoVersion":"go1.21.11","Os":"linux","Arch":"amd64","KernelVersion":"3.10.0-1160.119.1.el7.x86_64","BuildTime":"2024-06-05T11:31:02.000000000+00:00"}
 ```
 
 #### ✅ 远程情况：使用 TCP Socket<br>
@@ -97,26 +100,25 @@ docker -H tcp://192.168.1.100:2375 ps
 ```
 这会连接到远程主机 192.168.1.100 上的 Docker 守护进程（监听 TCP 端口 2375）。<br>
 
-⚠️ 安全提示：
-tcp://0.0.0.0:2375 是明文通信，默认不安全！
+⚠️ 安全提示：<br>
+tcp://0.0.0.0:2375 是明文通信，默认不安全！<br>
 
-正确做法是使用 tcp://host:2376 并启用 TLS 加密通信。
+正确做法是使用 tcp://host:2376 并启用 TLS 加密通信。<br>
 
-✅ 总结对比
-通信方式	描述	默认？	是否加密
-Unix Socket	本地使用 /var/run/docker.sock	✅ 默认	❌ 不加密（但本地安全）
-TCP Socket	可远程连接 Docker 引擎	❌ 需配置	✅ 支持 TLS 加密
+✅ 总结对比<br>
+通信方式	描述	默认？	是否加密<br>
+Unix Socket	本地使用 /var/run/docker.sock	✅ 默认	❌ 不加密（但本地安全）<br>
+TCP Socket	可远程连接 Docker 引擎	❌ 需配置	✅ 支持 TLS 加密<br>
 
-✅ 配置远程监听（补充）
-编辑 /etc/docker/daemon.json：
-
+✅ 配置远程监听（补充）<br>
+编辑 /etc/docker/daemon.json：<br>
+```
 {
   "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2375"]
 }
-然后重启 Docker 服务：
-
-bash
-复制
-编辑
+```
+然后重启 Docker 服务：<br>
+```
 systemctl daemon-reexec
 systemctl restart docker
+```
