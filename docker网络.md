@@ -207,3 +207,29 @@ br-618fdf2bb876: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         TX packets 0  bytes 0 (0.0 B)
         TX errors 0  dropped 227 overruns 0  carrier 0  collisions 0
 ```
+查看当前 Linux 系统中虚拟网桥（Bridge）配置情况:<br>
+```
+[root@master01 gcc]# brctl show
+bridge name     bridge id               STP enabled     interfaces
+br-618fdf2bb876         8000.024289068736       no
+docker0         8000.0242c2ebb1f8       no              vethee37109
+virbr0          8000.52540001dd45       yes             virbr0-nic
+
+bridge name	网桥的名字（相当于一个虚拟交换机）
+bridge id	网桥的唯一标识（MAC 相关）
+STP enabled	是否启用了 STP（生成树协议，用于防环）
+interfaces	接入该网桥的接口（网卡、veth、虚拟接口等）
+```
+容器网络连接:<br>
+```
+docker network connect my-net <container1>
+docker network connect my-net <container2>
+```
+把两个已经运行的容器连接到名为 my-net 的 Docker 自定义网络上，从而使它们可以直接通信<br>
+<br>
+进入容器 1 测试：<br>
+```
+docker exec -it container1 sh
+ping container2
+```
+可以 ping 通,现在都在 my-net 网络中<br>
