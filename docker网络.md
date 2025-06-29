@@ -68,41 +68,34 @@ Server:
  Live Restore Enabled: false
 ```
 ### 3.1 客户端和服务端通讯<br>
-#### 通信方式：<br>
+#### ✅ 通信方式：<br>
 **Unix Domain Socket（本地通信）**<br>
-TCP Socket（远程通信）<br>
+**TCP Socket（远程通信）**<br>
 
-✅ 默认情况：使用 Unix Socket
-在 Linux 上，Docker 默认使用：
-
-arduino
-复制
-编辑
+#### ✅ 默认情况：使用 Unix Socket<br>
+在 Linux 上，Docker 默认使用：<br>
+```
 /var/run/docker.sock
-这是一个 Unix 域套接字 文件，客户端通过它与 dockerd 守护进程进行本地通信。
+```
+这是一个 Unix 域套接字 文件，客户端通过它与 dockerd 守护进程进行本地通信。<br>
 
-🔍 示例：
-bash
-复制
-编辑
+#### 🔍 示例：<br>
+```
 docker ps
-这条命令实际上会通过 HTTP 请求（如 GET /containers/json）发给 dockerd，只不过是通过 unix:///var/run/docker.sock 而不是 TCP。
+```
+这条命令实际上会通过 HTTP 请求（如 GET /containers/json）发给 dockerd，只不过是通过 unix:///var/run/docker.sock 而不是 TCP。<br>
 
-你可以用 curl 验证：
-
-bash
-复制
-编辑
+可用 curl 验证：<br>
+```
 curl --unix-socket /var/run/docker.sock http://localhost/version
-✅ 远程情况：使用 TCP Socket
-Docker 也支持通过 TCP 网络 来远程控制 Docker 守护进程。
+```
 
-例如：
-bash
-复制
-编辑
+#### ✅ 远程情况：使用 TCP Socket<br>
+Docker 也支持通过 TCP 网络 来远程控制 Docker 守护进程。<br>
+```
 docker -H tcp://192.168.1.100:2375 ps
-这会连接到远程主机 192.168.1.100 上的 Docker 守护进程（监听 TCP 端口 2375）。
+```
+这会连接到远程主机 192.168.1.100 上的 Docker 守护进程（监听 TCP 端口 2375）。<br>
 
 ⚠️ 安全提示：
 tcp://0.0.0.0:2375 是明文通信，默认不安全！
@@ -117,9 +110,6 @@ TCP Socket	可远程连接 Docker 引擎	❌ 需配置	✅ 支持 TLS 加密
 ✅ 配置远程监听（补充）
 编辑 /etc/docker/daemon.json：
 
-json
-复制
-编辑
 {
   "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2375"]
 }
