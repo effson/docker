@@ -244,4 +244,4 @@ docker network disconnect bridge <container2>
 docker exec -it mynginx bash
 ping container1
 ```
-ping不同！<br>
+ping不通！<br>
