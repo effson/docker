@@ -142,3 +142,10 @@ c273e32d6ea9   bridge    bridge    local
 648ddf46838f   host      host      local
 5115630d493c   none      null      local
 ```
+## 2 容器的网络连接机制<br>
+### 2.1 默认 bridge 模式工作原理<br>
+每次启动容器时，Docker 会：<br>
+给容器分配一个虚拟网卡（veth pair）<br>
+一端连接容器内部，另一端接入 docker0 网桥<br>
+容器默认通过 NAT 上网（和宿主机共享 IP）<br>
+宿主机中有个叫 docker0 的虚拟网桥，就是 Docker 默认创建的 bridge 网络。<br>
