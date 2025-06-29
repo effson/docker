@@ -240,3 +240,8 @@ docker run -d --name mynginx nginx:latest
 docker network disconnect bridge <container1>
 docker network disconnect bridge <container2>
 ```
+```
+docker exec -it mynginx bash
+ping container1
+```
+ping不同！<br>
