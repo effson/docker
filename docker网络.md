@@ -149,3 +149,61 @@ c273e32d6ea9   bridge    bridge    local
 一端连接容器内部，另一端接入 docker0 网桥<br>
 容器默认通过 NAT 上网（和宿主机共享 IP）<br>
 宿主机中有个叫 docker0 的虚拟网桥，就是 Docker 默认创建的 bridge 网络。<br>
+
+### 2.2 创建自定义 bridge 网络<br>
+```
+docker network create my-net
+
+[root@master01 gcc]# docker network create my-net
+618fdf2bb876deeb8943e57373e5b01220edfbcadcd7d02254e28a008accc53b
+[root@master01 gcc]# docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+c273e32d6ea9   bridge    bridge    local
+648ddf46838f   host      host      local
+618fdf2bb876   my-net    bridge    local
+5115630d493c   none      null      local
+
+```
+```
+[root@master01 gcc]# docker network inspect 618fdf2bb876
+[
+    {
+        "Name": "my-net",
+        "Id": "618fdf2bb876deeb8943e57373e5b01220edfbcadcd7d02254e28a008accc53b",
+        "Created": "2025-06-29T22:20:29.296097048+08:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]
+```
+```
+[root@master01 gcc]# ifconfig
+br-618fdf2bb876: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.18.0.1  netmask 255.255.0.0  broadcast 172.18.255.255
+        ether 02:42:89:06:87:36  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 227 overruns 0  carrier 0  collisions 0
+```
