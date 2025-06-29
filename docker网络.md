@@ -123,3 +123,16 @@ TCP Socket	可远程连接 Docker 引擎	❌ 需配置	✅ 支持 TLS 加密
 systemctl daemon-reexec
 systemctl restart docker
 ```
+# docker网络<br>
+Docker 的网络管理为容器提供了多种灵活的网络连接方式，使容器之间、容器与外部网络之间能够通信<br>
+Docker 默认提供以下几种网络模式（可以通过 docker network ls 查看）：<br>
+
+网络模式	作用	是否默认	特点<br>
+bridge	Docker 默认的容器间通信网络	✅	容器间可以通信，宿主机访问需端口映射<br>
+host	使用宿主机网络栈	❌	没有隔离，性能高，但端口可能冲突<br>
+none	完全不配置网络	❌	容器无法联网，用于自定义网络<br>
+overlay	跨主机容器通信（Swarm 模式）	❌	用于多主机集群<br>
+macvlan	给容器分配真实网卡 IP	❌	容器像物理主机一样接入局域网<br>
+
+```
+```
