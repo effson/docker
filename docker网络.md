@@ -220,6 +220,7 @@ bridge id	网桥的唯一标识（MAC 相关）
 STP enabled	是否启用了 STP（生成树协议，用于防环）
 interfaces	接入该网桥的接口（网卡、veth、虚拟接口等）
 ```
+### 2.3 容器连接:<br>
 容器网络连接:<br>
 ```
 docker network connect my-net <container1>
@@ -233,3 +234,9 @@ docker exec -it container1 sh
 ping container2
 ```
 可以 ping 通,现在都在 my-net 网络中<br>
+### 2.4 子网隔离:<br>
+```
+docker run -d --name mynginx nginx:latest
+docker network disconnect bridge <container1>
+docker network disconnect bridge <container2>
+```
