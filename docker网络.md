@@ -245,3 +245,26 @@ docker exec -it mynginx bash
 ping container1
 ```
 ping不通！<br>
+
+
+## 3
+```
+docker network create \
+  --driver bridge \
+  --subnet 172.100.0.0/16 \
+  --gateway 172.100.0.1 \
+  --internal \
+  --aux-address h1=172.100.0.2 \
+  --aux-address h2=172.100.0.3 \
+  my-internal-net
+```
+
+### 📌 各参数解释：<br>
+```
+--driver bridge	使用 bridge 网络驱动
+--subnet	指定整个网络的 IP 段
+--gateway	指定内部网关
+--internal	禁止访问外网，只允许网络内通信
+--aux-address	预留 IP 地址，防止 Docker 分配给容器
+my-internal-net	网络名称
+```
