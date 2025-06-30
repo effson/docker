@@ -268,3 +268,29 @@ docker network create \
 --aux-address	预留 IP 地址，防止 Docker 分配给容器
 my-internal-net	网络名称
 ```
+### docker创建网桥时--opt选项：<br>
+```
+com.docker.network.bridge.name：
+含义：指定创建的桥接网络的名称。
+示例：--opt com.docker.network.bridge.name=mybridge
+
+com.docker.network.bridge.driver：
+含义：指定使用的驱动程序类型，通常为 bridge。
+示例：--opt com.docker.network.bridge.driver=bridge
+
+com.docker.network.bridge.enable_icc：
+含义：控制容器间的通信是否启用，默认为 true。
+示例：--opt com.docker.network.bridge.enable_icc=false
+
+com.docker.network.bridge.enable_ip_masquerade：
+含义：是否启用 IP 伪装，默认为 true。如果启用，容器的流量会通过宿主机的 IP 地址进行转发。
+示例：--opt com.docker.network.bridge.enable_ip_masquerade=false
+
+com.docker.network.bridge.host_binding_ipv4：
+含义：指定宿主机的 IP 地址，用于桥接网络。
+示例：--opt com.docker.network.bridge.host_binding_ipv4=192.168.1.1
+
+com.docker.network.bridge.vlan：
+含义：指定 VLAN ID，用于网络隔离。
+示例：--opt com.docker.network.bridge.vlan=100
+```
