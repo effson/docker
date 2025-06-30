@@ -284,6 +284,7 @@ com.docker.network.bridge.enable_icc：
 
 com.docker.network.bridge.enable_ip_masquerade：
 含义：是否启用 IP 伪装，默认为 true。如果启用，容器的流量会通过宿主机的 IP 地址进行转发。
+关闭则容器不能访问公网
 示例：--opt com.docker.network.bridge.enable_ip_masquerade=false
 
 com.docker.network.bridge.host_binding_ipv4：
